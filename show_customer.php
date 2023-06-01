@@ -44,7 +44,6 @@ require_once 'header.inc.php';
 
     // Prepare SQL using Parameterized Form (Safe from SQL Injections)
     $sql = "SELECT c.CustomerNumber, c.CustomerName, a.StreetAddress, a.CityName, a.StateCode, a.PostalCode, o.OrderNumber, o.OrderDate, oi.ItemNumber, ci.ItemDescription, oi.Quantity, oi.UnitPrice FROM customer c JOIN address a ON c.DefaultAddressID = a.AddressID JOIN ordermaster o ON c.CustomerNumber = o.CustomerNumber JOIN orderitem oi ON o.OrderNumber = oi.OrderNumber JOIN catalogitem ci ON oi.ItemNumber = ci.ItemNumber WHERE c.CustomerNumber = ?";
-    
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         echo "failed to prepare";
@@ -55,20 +54,18 @@ require_once 'header.inc.php';
         // Execute the Statement
         $stmt->execute();
 
-        // Check if there are any matching records
-        if ($stmt->num_rows === 0) {
-            echo "No records found.";
-        } else {
-            // Fetch and display the customer data
-            $stmt->bind_result($customerNumber, $customerName, $streetName, $cityName, $stateCode, $postalCode, $orderNumber, $orderDate, $itemNumber, $itemDescription, $quantity, $unitPrice);
+        // Process Results Using Cursor
+        $stmt->bind_result($customerNumber, $customerName, $streetName, $cityName, $stateCode, $postalCode, $orderNumber, $orderDate, $itemNumber, $itemDescription, $quantity, $unitPrice);
 
-            echo "<div>";
-            if ($stmt->fetch()) {
-                echo htmlspecialchars($customerName) . "<br>";
-                echo htmlspecialchars($streetName) . ", " . htmlspecialchars($stateCode) . " " . htmlspecialchars($postalCode) . "<br>";
+        echo "<div>";
+        if ($stmt->fetch()) {
+            echo htmlspecialchars($customerName) . "<br>";
+            echo htmlspecialchars($streetName) . ", " . htmlspecialchars($stateCode) . " " . htmlspecialchars($postalCode) . "<br>";
+            while ($stmt->fetch()) {
+                // Additional rows, if any, can be processed here
             }
-            echo "</div>";
         }
+        echo "</div>";
     ?>
         <div>
             <a href="update_customer.php?id=<?= htmlspecialchars($customerNumber) ?>">Update Customer</a>
