@@ -7,7 +7,7 @@
  */
 require_once 'config.inc.php';
 // Get Customer Number
-$id = $_GET['id'];
+$id = isset($_GET['id']) ? $_GET['id'] : '';
 if ($id === "") {
     header('location: list_customers.php');
     exit();
@@ -43,31 +43,29 @@ require_once 'header.inc.php';
     }
 
     // Prepare SQL using Parameterized Form (Safe from SQL Injections)
-    $sql = "SELECT CustomerNumber,CustomerName, DefaultAddressID FROM Customer C " .
-        "INNER JOIN Address A ON C.DefaultAddressID = A.addressID WHERE CustomerNumber = ?";
+    $sql = "SELECT c.CustomerNumber, c.CustomerName, a.StreetAddress, a.CityName, a.StateCode, a.PostalCode, o.OrderNumber, o.OrderDate, oi.ItemNumber, ci.ItemDescription, oi.Quantity, oi.UnitPrice FROM customer c JOIN address a ON c.DefaultAddressID = a.AddressID JOIN ordermaster o ON c.CustomerNumber = o.CustomerNumber JOIN orderitem oi ON o.OrderNumber = oi.OrderNumber JOIN catalogitem ci ON oi.ItemNumber = ci.ItemNumber WHERE c.CustomerNumber = <customer_number>;";
     $stmt = $conn->stmt_init();
     if (!$stmt->prepare($sql)) {
         echo "failed to prepare";
     }
     else {
-        
         // Bind Parameters from User Input
-        $stmt->bind_param('s',$id);
-        
+        $stmt->bind_param('s', $id);
+
         // Execute the Statement
         $stmt->execute();
-        
+
         // Process Results Using Cursor
-        $stmt->bind_result($customerNumber,$customerName,$streetName,$cityName,$stateCode,$postalCode);
+        $stmt->bind_result($customerNumber, $customerName, $streetName, $cityName, $stateCode, $postalCode);
         echo "<div>";
         while ($stmt->fetch()) {
-            echo '<a href="show_customer.php?id='  . $customerNumber . '">' . $customerName . '</a><br>' .
-             $streetName . ',' . $stateCode . '  ' . $postalCode;
+            echo '<a href="show_customer.php?id=' . htmlspecialchars($customerNumber) . '">' . htmlspecialchars($customerName) . '</a><br>' .
+                htmlspecialchars($streetName) . ',' . htmlspecialchars($stateCode) . '  ' . htmlspecialchars($postalCode);
         }
         echo "</div>";
     ?>
         <div>
-            <a href="update_customer.php?id=<?= $customerNumber ?>">Update Customer</a>
+            <a href="update_customer.php?id=<?= htmlspecialchars($customerNumber) ?>">Update Customer</a>
         </div>
     <?php
     }
@@ -75,6 +73,6 @@ require_once 'header.inc.php';
     $conn->close();
 
     ?>
-</>
+</div>
 </body>
 </html>
