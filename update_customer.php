@@ -6,6 +6,7 @@
  * Time: 3:07 PM
  */
 require_once 'config.inc.php';
+
 // Get Customer Number
 $id = $_GET['id'];
 if ($id === "") {
@@ -42,63 +43,65 @@ require_once 'header.inc.php';
         die("Connection failed: " . $conn->connect_error);
     }
 
-    // Check the Request is an Update from User -- Submitted via Form
+    // Check if the form is submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $customerName = $_POST['customerName'];
-        if ($customerName === null)
+        if ($customerName === null) {
             echo "<div><i>Specify a new name</i></div>";
-        else if ($customerName === false)
+        } else if ($customerName === false) {
             echo "<div><i>Specify a new name</i></div>";
-        else if (trim($customerName) === "")
+        } else if (trim($customerName) === "") {
             echo "<div><i>Specify a new name</i></div>";
-        else {
-            
-            /* perform update using safe parameterized sql */
-            $sql = "UPDATE Customer SET CustomerName = ? WHERE CustomerNumber = ?";
-            $stmt = $conn->stmt_init();
-            if (!$stmt->prepare($sql)) {
-                echo "failed to prepare";
+        } else {
+            // Update the customer name
+            $sql = "UPDATE customer SET CustomerName = ? WHERE CustomerNumber = ?";
+            $stmt = $conn->prepare($sql);
+            if (!$stmt) {
+                echo "Failed to prepare";
             } else {
-                
-                // Bind user input to statement
-                $stmt->bind_param('ss', $customerName,$id);
-                
-                // Execute statement and commit transaction
+                // Bind user input to the statement
+                $stmt->bind_param('ss', $customerName, $id);
+                // Execute the statement
                 $stmt->execute();
-                $conn->commit();
+                // Check if the update was successful
+                if ($stmt->affected_rows > 0) {
+                    echo "Customer name updated successfully.";
+                } else {
+                    echo "Failed to update customer name.";
+                }
             }
         }
     }
 
-    /* Refresh the Data */
-    $sql = "SELECT CustomerNumber,CustomerName,StreetAddress,CityName,StateCode,PostalCode FROM Customer C " .
-        "INNER JOIN Address A ON C.defaultAddressID = A.addressID WHERE CustomerNumber = ?";
-    $stmt = $conn->stmt_init();
-    if (!$stmt->prepare($sql)) {
-        echo "failed to prepare";
-    }
-    else {
-        $stmt->bind_param('s',$id);
+    // Retrieve the customer details
+    $sql = "SELECT CustomerNumber, CustomerName, StreetAddress, CityName, StateCode, PostalCode FROM customer C " .
+        "INNER JOIN address A ON C.defaultAddressID = A.addressID WHERE CustomerNumber = ?";
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
+        echo "Failed to prepare";
+    } else {
+        $stmt->bind_param('s', $id);
         $stmt->execute();
-        $stmt->bind_result($customerNumber,$customerName,$streetName,$cityName,$stateCode,$postalCode);
+        $stmt->bind_result($customerNumber, $customerName, $streetName, $cityName, $stateCode, $postalCode);
         ?>
         <form method="post">
             <input type="hidden" name="id" value="<?= $id ?>">
-        <?php
-        while ($stmt->fetch()) {
-            echo '<a href="show_customer.php?id='  . $customerNumber . '">' . $customerName . '</a><br>' .
-             $streetName . ',' . $stateCode . '  ' . $postalCode;
-        }
-    ?><br><br>
+            <?php
+            while ($stmt->fetch()) {
+                echo '<a href="show_customer.php?id=' . $customerNumber . '">' . $customerName . '</a><br>' .
+                    $streetName . ', ' . $cityName . ', ' . $stateCode . ' ' . $postalCode;
+            }
+            ?><br><br>
             New Name: <input type="text" name="customerName">
             <button type="submit">Update</button>
         </form>
-    <?php
+        <?php
     }
 
+    $stmt->close();
     $conn->close();
 
     ?>
-</>
+</div>
 </body>
 </html>
