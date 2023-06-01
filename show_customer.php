@@ -43,8 +43,8 @@ require_once 'header.inc.php';
     }
 
     // Prepare SQL using Parameterized Form (Safe from SQL Injections)
-    $sql = "SELECT CustomerNumber,CustomerName,StreetAddress,CityName,StateCode,PostalCode FROM Customer C " .
-        "INNER JOIN Address A ON C.defaultAddressID = A.addressID WHERE CustomerNumber = ?";
+    $sql = "SELECT CustomerNumber,CustomerName, DefaultAddressID FROM Customer C " .
+        "INNER JOIN Address A ON C.DefaultAddressID = A.addressID WHERE CustomerNumber = ?";
     $stmt = $conn->stmt_init();
     if (!$stmt->prepare($sql)) {
         echo "failed to prepare";
