@@ -58,9 +58,12 @@ require_once 'header.inc.php';
         $stmt->bind_result($customerNumber, $customerName, $streetName, $cityName, $stateCode, $postalCode, $orderNumber, $orderDate, $itemNumber, $itemDescription, $quantity, $unitPrice);
 
         echo "<div>";
-        while ($stmt->fetch()) {
-            echo '<a href="show_customer.php?id=' . htmlspecialchars($customerNumber) . '">' . htmlspecialchars($customerName) . '</a><br>' .
-                htmlspecialchars($streetName) . ',' . htmlspecialchars($stateCode) . '  ' . htmlspecialchars($postalCode);
+        if ($stmt->fetch()) {
+            echo htmlspecialchars($customerName) . "<br>";
+            echo htmlspecialchars($streetName) . ", " . htmlspecialchars($stateCode) . " " . htmlspecialchars($postalCode) . "<br>";
+            while ($stmt->fetch()) {
+                // Additional rows, if any, can be processed here
+            }
         }
         echo "</div>";
     ?>
