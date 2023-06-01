@@ -43,12 +43,11 @@ require_once 'header.inc.php';
     }
 
     // Prepare SQL using Parameterized Form (Safe from SQL Injections)
-    $sql = "SELECT c.CustomerNumber, c.CustomerName, a.StreetAddress, a.CityName, a.StateCode, a.PostalCode, o.OrderNumber, o.OrderDate, oi.ItemNumber, ci.ItemDescription, oi.Quantity, oi.UnitPrice FROM customer c JOIN address a ON c.DefaultAddressID = a.AddressID JOIN ordermaster o ON c.CustomerNumber = o.CustomerNumber JOIN orderitem oi ON o.OrderNumber = oi.OrderNumber JOIN catalogitem ci ON oi.ItemNumber = ci.ItemNumber WHERE c.CustomerNumber = <customer_number>;";
-    $stmt = $conn->stmt_init();
-    if (!$stmt->prepare($sql)) {
+    $sql = "SELECT c.CustomerNumber, c.CustomerName, a.StreetAddress, a.CityName, a.StateCode, a.PostalCode, o.OrderNumber, o.OrderDate, oi.ItemNumber, ci.ItemDescription, oi.Quantity, oi.UnitPrice FROM customer c JOIN address a ON c.DefaultAddressID = a.AddressID JOIN ordermaster o ON c.CustomerNumber = o.CustomerNumber JOIN orderitem oi ON o.OrderNumber = oi.OrderNumber JOIN catalogitem ci ON oi.ItemNumber = ci.ItemNumber WHERE c.CustomerNumber = ?";
+    $stmt = $conn->prepare($sql);
+    if (!$stmt) {
         echo "failed to prepare";
-    }
-    else {
+    } else {
         // Bind Parameters from User Input
         $stmt->bind_param('s', $id);
 
@@ -70,6 +69,7 @@ require_once 'header.inc.php';
     <?php
     }
 
+    $stmt->close();
     $conn->close();
 
     ?>
