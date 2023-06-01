@@ -21,9 +21,9 @@ $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
 require_once 'header.inc.php';
 ?>
 <div>
-    <h2>Consumable List</h2>
+    <h2>Customer List</h2>
     <form method="GET" action="">
-        <label for="filter">Filter by Description:</label>
+        <label for="filter">Filter by Customer Name:</label>
         <input type="text" id="filter" name="filter" value="<?php echo htmlspecialchars($filter); ?>">
         <button type="submit">Apply Filter</button>
     </form>
@@ -37,15 +37,15 @@ require_once 'header.inc.php';
     }
 
     // Prepare SQL Statement
-    $sql = "SELECT `itemID`, `description`, `expBonus`, `expDuration`, `maxQuantity` FROM `Consumable`";
+    $sql = "SELECT `CustomerNumber`, `CustomerName`, `DefaultAddressID` FROM `customer`";
     
     // Add filter condition if provided
     if (!empty($filter)) {
         $filter = '%' . $conn->real_escape_string($filter) . '%';
-        $sql .= " WHERE `description` LIKE ?";
+        $sql .= " WHERE `CustomerName` LIKE ?";
     }
 
-    $sql .= " ORDER BY `description`"; // Sort by description column
+    $sql .= " ORDER BY `CustomerName`"; // Sort by customername column
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
@@ -60,14 +60,14 @@ require_once 'header.inc.php';
         $stmt->execute();
 
         // Bind the result
-        $stmt->bind_result($itemID, $description, $expBonus, $expDuration, $maxQuantity);
+        $stmt->bind_result($CustomerNumber, $CustomerName, $DefaultAddressID);
 
         // Loop Through Result
         echo "<ul>";
         $recordsFound = false; // Flag to track if any records are found
         while ($stmt->fetch()) {
             $recordsFound = true;
-            echo '<li><a href="show_customer.php?id=' . $itemID . '">' . htmlspecialchars($description) . '</a></li>';
+            echo '<li><a href="show_customer.php?id=' . $CustomerNumber . '">' . htmlspecialchars($CustomerName) . '</a></li>';
         }
         echo "</ul>";
 
