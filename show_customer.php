@@ -55,7 +55,8 @@ require_once 'header.inc.php';
         $stmt->execute();
 
         // Process Results Using Cursor
-        $stmt->bind_result($customerNumber, $customerName, $streetName, $cityName, $stateCode, $postalCode);
+        $stmt->bind_result($customerNumber, $customerName, $streetName, $cityName, $stateCode, $postalCode, $orderNumber, $orderDate, $itemNumber, $itemDescription, $quantity, $unitPrice);
+
         echo "<div>";
         while ($stmt->fetch()) {
             echo '<a href="show_customer.php?id=' . htmlspecialchars($customerNumber) . '">' . htmlspecialchars($customerName) . '</a><br>' .
