@@ -43,7 +43,14 @@ require_once 'header.inc.php';
     }
 
     // Prepare SQL using Parameterized Form (Safe from SQL Injections)
-    $sql = "SELECT c.CustomerNumber, c.CustomerName, a.StreetAddress, a.CityName, a.StateCode, a.PostalCode, o.OrderNumber, o.OrderDate, oi.ItemNumber, ci.ItemDescription, oi.Quantity, oi.UnitPrice FROM customer c JOIN address a ON c.DefaultAddressID = a.AddressID JOIN ordermaster o ON c.CustomerNumber = o.CustomerNumber JOIN orderitem oi ON o.OrderNumber = oi.OrderNumber JOIN catalogitem ci ON oi.ItemNumber = ci.ItemNumber WHERE c.CustomerNumber = ?";
+    $sql = "SELECT c.CustomerNumber, c.CustomerName, a.StreetAddress, a.CityName, a.StateCode, a.PostalCode, o.OrderNumber, o.OrderDate, oi.ItemNumber, ci.ItemDescription, oi.Quantity, oi.UnitPrice 
+        FROM customer c 
+        LEFT JOIN address a ON c.DefaultAddressID = a.AddressID 
+        LEFT JOIN ordermaster o ON c.CustomerNumber = o.CustomerNumber 
+        LEFT JOIN orderitem oi ON o.OrderNumber = oi.OrderNumber 
+        LEFT JOIN catalogitem ci ON oi.ItemNumber = ci.ItemNumber 
+        WHERE c.CustomerNumber = ?";
+    
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         echo "failed to prepare";
