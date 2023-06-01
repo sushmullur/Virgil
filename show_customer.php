@@ -54,18 +54,20 @@ require_once 'header.inc.php';
         // Execute the Statement
         $stmt->execute();
 
-        // Process Results Using Cursor
-        $stmt->bind_result($customerNumber, $customerName, $streetName, $cityName, $stateCode, $postalCode, $orderNumber, $orderDate, $itemNumber, $itemDescription, $quantity, $unitPrice);
+        // Check if there are any matching records
+        if ($stmt->num_rows === 0) {
+            echo "No records found.";
+        } else {
+            // Fetch and display the customer data
+            $stmt->bind_result($customerNumber, $customerName, $streetName, $cityName, $stateCode, $postalCode, $orderNumber, $orderDate, $itemNumber, $itemDescription, $quantity, $unitPrice);
 
-        echo "<div>";
-        if ($stmt->fetch()) {
-            echo htmlspecialchars($customerName) . "<br>";
-            echo htmlspecialchars($streetName) . ", " . htmlspecialchars($stateCode) . " " . htmlspecialchars($postalCode) . "<br>";
-            while ($stmt->fetch()) {
-                // Additional rows, if any, can be processed here
+            echo "<div>";
+            if ($stmt->fetch()) {
+                echo htmlspecialchars($customerName) . "<br>";
+                echo htmlspecialchars($streetName) . ", " . htmlspecialchars($stateCode) . " " . htmlspecialchars($postalCode) . "<br>";
             }
+            echo "</div>";
         }
-        echo "</div>";
     ?>
         <div>
             <a href="update_customer.php?id=<?= htmlspecialchars($customerNumber) ?>">Update Customer</a>
