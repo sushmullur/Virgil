@@ -13,7 +13,7 @@ $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
 ?>
 <html>
 <head>
-    <title>Term Project</title>
+    <title>Group 2 Term Project</title>
     <link rel="stylesheet" href="base.css">
 </head>
 <body>

@@ -10,7 +10,7 @@ require_once 'config.inc.php';
 ?>
 <html>
 <head>
-    <title>Sample PHP Database Program</title>
+    <title>Group 2 Term Project</title>
     <link rel="stylesheet" href="base.css">
 </head>
 <body>
@@ -18,7 +18,7 @@ require_once 'config.inc.php';
 require_once 'header.inc.php';
 ?>
 <div>
-    <h2>Product Catalog</h2>
+    <h2>Item Catalog</h2>
     <?php
     // Create connection
     $conn = new mysqli($servername, $username, $password, $database, $port);
@@ -29,7 +29,7 @@ require_once 'header.inc.php';
     }
 
     // Prepare SQL
-    $sql = "SELECT ItemNumber,ItemDescription,CategoryCode FROM catalogitem";
+    $sql = "SELECT itemName,itemID FROM Item";
     $stmt = $conn->stmt_init();
     if (!$stmt->prepare($sql)) {
         echo "failed to prepare";
@@ -40,9 +40,9 @@ require_once 'header.inc.php';
         $stmt->execute();
         
         // Process Results using Cursor
-        $stmt->bind_result($itemNumber,$description, $category_code);
+        $stmt->bind_result($itemName,$itemID);
         while ($stmt->fetch()) {
-            echo "<p>" . $description . "</p>";
+            echo "<p>" . $itemName . "</p>";
         }
     }
 
