@@ -32,7 +32,7 @@ if ($id === null) {
 require_once 'header.inc.php';
 ?>
 <div>
-    <h2>Update Customer</h2>
+    <h2>Update Job</h2>
     <?php
 
     // Create connection
