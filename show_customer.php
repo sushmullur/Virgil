@@ -43,13 +43,9 @@ require_once 'header.inc.php';
     }
 
     // Prepare SQL using Parameterized Form (Safe from SQL Injections)
-    $sql = "SELECT c.CustomerNumber, c.CustomerName, a.StreetAddress, a.CityName, a.StateCode, a.PostalCode, o.OrderNumber, o.OrderDate, oi.ItemNumber, ci.ItemDescription, oi.Quantity, oi.UnitPrice 
-        FROM customer c 
-        LEFT JOIN address a ON c.DefaultAddressID = a.AddressID 
-        LEFT JOIN ordermaster o ON c.CustomerNumber = o.CustomerNumber 
-        LEFT JOIN orderitem oi ON o.OrderNumber = oi.OrderNumber 
-        LEFT JOIN catalogitem ci ON oi.ItemNumber = ci.ItemNumber 
-        WHERE c.CustomerNumber = ?";
+    $sql = "SELECT j.jobName, j.jobID, j.maxLevel, j.type
+        FROM Job j 
+        WHERE j.jobName = ?";
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
@@ -62,11 +58,11 @@ require_once 'header.inc.php';
         $stmt->execute();
 
         // Process Results Using Cursor
-        $stmt->bind_result($customerNumber, $customerName, $streetName, $cityName, $stateCode, $postalCode, $orderNumber, $orderDate, $itemNumber, $itemDescription, $quantity, $unitPrice);
+        $stmt->bind_result($jobName, $jobID, $maxLevel, $type);
 
         echo "<div>";
         if ($stmt->fetch()) {
-            echo htmlspecialchars($customerName) . "<br>";
+            echo htmlspecialchars($jobName) . "<br>";
             while ($stmt->fetch()) {
                 // Additional rows, if any, can be processed here
             }
@@ -74,7 +70,7 @@ require_once 'header.inc.php';
         echo "</div>";
     ?>
         <div>
-            <a href="update_customer.php?id=<?= htmlspecialchars($customerNumber) ?>">Update Customer</a>
+            <a href="update_customer.php?id=<?= htmlspecialchars($jobName) ?>">Update Job</a>
         </div>
     <?php
     }
