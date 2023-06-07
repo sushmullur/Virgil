@@ -10,6 +10,6 @@
 <div class="topnav">
     <a href="index.php">Home</a>
     <a href="list_customers.php">List Jobs</a>
-    <a href="list_products.php">List Products</a>
+    <a href="list_products.php">List Items</a>
 </div></div>
 <h1>Group 2 Term Project</h1>
