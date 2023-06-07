@@ -12,4 +12,4 @@
     <a href="list_customers.php">List Jobs</a>
     <a href="list_products.php">List Products</a>
 </div></div>
-<h1>Sample PHP Database Program</h1>
+<h1>Group 2 Term Project</h1>
