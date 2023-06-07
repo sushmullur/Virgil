@@ -31,7 +31,7 @@ if ($id === null) {
 require_once 'header.inc.php';
 ?>
 <div>
-    <h2>Show Customer</h2>
+    <h2>Show Job</h2>
     <?php
 
     // Create connection
@@ -67,7 +67,6 @@ require_once 'header.inc.php';
         echo "<div>";
         if ($stmt->fetch()) {
             echo htmlspecialchars($customerName) . "<br>";
-            echo htmlspecialchars($streetName) . ", " . htmlspecialchars($stateCode) . " " . htmlspecialchars($postalCode) . "<br>";
             while ($stmt->fetch()) {
                 // Additional rows, if any, can be processed here
             }

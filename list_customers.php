@@ -37,7 +37,7 @@ require_once 'header.inc.php';
     }
 
     // Prepare SQL Statement
-    $sql = "SELECT `jobID`, `jobName`, `type` FROM `Job`";
+    $sql = "SELECT `jobName`, `jobID`, `type` FROM `Job`";
     
     // Add filter condition if provided
     if (!empty($filter)) {
@@ -60,14 +60,14 @@ require_once 'header.inc.php';
         $stmt->execute();
 
         // Bind the result
-        $stmt->bind_result($jobID, $jobName, $type);
+        $stmt->bind_result($jobName, $jobID, $type);
 
         // Loop Through Result
         echo "<ul>";
         $recordsFound = false; // Flag to track if any records are found
         while ($stmt->fetch()) {
             $recordsFound = true;
-            echo '<li><a href="show_customer.php?id=' . $jobID . '">' . htmlspecialchars($jobID) . '</a></li>';
+            echo '<li><a href="show_customer.php?id=' . $jobName . '">' . htmlspecialchars($jobName) . '</a></li>';
         }
         echo "</ul>";
 
