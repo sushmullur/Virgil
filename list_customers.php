@@ -37,15 +37,15 @@ require_once 'header.inc.php';
     }
 
     // Prepare SQL Statement
-    $sql = "SELECT `jobID`, `name`, `type` FROM `Job`";
+    $sql = "SELECT `jobID`, `jobName`, `type` FROM `Job`";
     
     // Add filter condition if provided
     if (!empty($filter)) {
         $filter = '%' . $conn->real_escape_string($filter) . '%';
-        $sql .= " WHERE `name` LIKE ?";
+        $sql .= " WHERE `jobName` LIKE ?";
     }
 
-    $sql .= " ORDER BY `name`"; // Sort by customername column
+    $sql .= " ORDER BY `jobName`"; // Sort by customername column
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
@@ -60,7 +60,7 @@ require_once 'header.inc.php';
         $stmt->execute();
 
         // Bind the result
-        $stmt->bind_result($jobID, $name, $type);
+        $stmt->bind_result($jobID, $jobName, $type);
 
         // Loop Through Result
         echo "<ul>";

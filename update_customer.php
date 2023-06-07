@@ -45,22 +45,22 @@ require_once 'header.inc.php';
 
     // Check if the form is submitted
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $customerName = $_POST['customerName'];
-        if ($customerName === null) {
+        $name = $_POST['jobName'];
+        if ($name === null) {
             echo "<div><i>Specify a new name</i></div>";
-        } else if ($customerName === false) {
+        } else if ($name === false) {
             echo "<div><i>Specify a new name</i></div>";
-        } else if (trim($customerName) === "") {
+        } else if (trim($name) === "") {
             echo "<div><i>Specify a new name</i></div>";
         } else {
             // Update the customer name
-            $sql = "UPDATE customer SET CustomerName = ? WHERE CustomerNumber = ?";
+            $sql = "UPDATE Job SET jobName = ? WHERE jobID = ?";
             $stmt = $conn->prepare($sql);
             if (!$stmt) {
                 echo "Failed to prepare";
             } else {
                 // Bind user input to the statement
-                $stmt->bind_param('ss', $customerName, $id);
+                $stmt->bind_param('ss', $jobName, $jobID);
                 // Execute the statement
                 $stmt->execute();
                 // Check if the update was successful
