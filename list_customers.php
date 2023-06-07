@@ -13,7 +13,7 @@ $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
 ?>
 <html>
 <head>
-    <title>Sample PHP Database Program</title>
+    <title>Term Project</title>
     <link rel="stylesheet" href="base.css">
 </head>
 <body>
