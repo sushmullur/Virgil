@@ -21,7 +21,7 @@ $filter = isset($_GET['filter']) ? $_GET['filter'] : '';
 require_once 'header.inc.php';
 ?>
 <div>
-    <h2>Customer List</h2>
+    <h2>Job List</h2>
     <form method="GET" action="">
         <label for="filter">Filter by Job Name:</label>
         <input type="text" id="filter" name="filter" value="<?php echo htmlspecialchars($filter); ?>">
