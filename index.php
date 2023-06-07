@@ -7,7 +7,7 @@
 */?>
 <html>
 <head>
-    <title>Sample PHP Database Program</title>
+    <title>Group 2 Term Project</title>
     <link rel="stylesheet" href="base.css">
 </head>
 <body>
@@ -16,7 +16,7 @@ require_once 'header.inc.php';
 ?>
 <div>
     <h2>About</h2>
-    <div>This is sample PHP program that does simple database operations calling the mysqli library in PHP</div>
+    <div>This is the group 2's term project that does simple database operations calling the mysqli library in PHP.</div>
 </div>
 </body>
 </html>
