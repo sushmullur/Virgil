@@ -23,7 +23,7 @@ require_once 'header.inc.php';
 <div>
     <h2>Customer List</h2>
     <form method="GET" action="">
-        <label for="filter">Filter by Customer Name:</label>
+        <label for="filter">Filter by Job Name:</label>
         <input type="text" id="filter" name="filter" value="<?php echo htmlspecialchars($filter); ?>">
         <button type="submit">Apply Filter</button>
     </form>
@@ -37,15 +37,15 @@ require_once 'header.inc.php';
     }
 
     // Prepare SQL Statement
-    $sql = "SELECT `CustomerNumber`, `CustomerName`, `DefaultAddressID` FROM `customer`";
+    $sql = "SELECT `jobID`, `name`, `type` FROM `Job`";
     
     // Add filter condition if provided
     if (!empty($filter)) {
         $filter = '%' . $conn->real_escape_string($filter) . '%';
-        $sql .= " WHERE `CustomerName` LIKE ?";
+        $sql .= " WHERE `name` LIKE ?";
     }
 
-    $sql .= " ORDER BY `CustomerName`"; // Sort by customername column
+    $sql .= " ORDER BY `name`"; // Sort by customername column
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
@@ -60,14 +60,14 @@ require_once 'header.inc.php';
         $stmt->execute();
 
         // Bind the result
-        $stmt->bind_result($CustomerNumber, $CustomerName, $DefaultAddressID);
+        $stmt->bind_result($jobID, $name, $type);
 
         // Loop Through Result
         echo "<ul>";
         $recordsFound = false; // Flag to track if any records are found
         while ($stmt->fetch()) {
             $recordsFound = true;
-            echo '<li><a href="show_customer.php?id=' . $CustomerNumber . '">' . htmlspecialchars($CustomerName) . '</a></li>';
+            echo '<li><a href="show_customer.php?id=' . $jobID . '">' . htmlspecialchars($jobID) . '</a></li>';
         }
         echo "</ul>";
 
