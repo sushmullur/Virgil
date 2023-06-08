@@ -67,7 +67,7 @@ require_once 'header.inc.php';
         $recordsFound = false; // Flag to track if any records are found
         while ($stmt->fetch()) {
             $recordsFound = true;
-            echo '<li><a href="show_customer.php?id=' . $jobName . '">' . htmlspecialchars($jobName) . '</a></li>';
+            echo '<li><a href="show_customer.php?jobID=' . htmlspecialchars($jobID) . '">' . htmlspecialchars($jobName) . '</a></li>';
         }
         echo "</ul>";
 
