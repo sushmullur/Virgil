@@ -9,15 +9,15 @@ require_once 'config.inc.php';
 // Get Job Name
 $jobName = isset($_GET['jobName']) ? $_GET['jobName'] : '';
 if ($jobName === "") {
-    header('location: list_jobs.php');
+    header('location: list_customers.php');
     exit();
 }
 if ($jobName === false) {
-    header('location: list_jobs.php');
+    header('location: list_customers.php');
     exit();
 }
 if ($jobName === null) {
-    header('location: list_jobs.php');
+    header('location: list_customers.php');
     exit();
 }
 ?>
