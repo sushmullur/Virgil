@@ -6,17 +6,17 @@
  * Time: 3:07 PM
  */
 require_once 'config.inc.php';
-// Get Job Name
-$jobName = isset($_GET['jobName']) ? $_GET['jobName'] : '';
-if ($jobName === "") {
+// Get Job ID
+$jobID = isset($_GET['jobID']) ? $_GET['jobID'] : '';
+if ($jobID === "") {
     header('location: list_customers.php');
     exit();
 }
-if ($jobName === false) {
+if ($jobID === false) {
     header('location: list_customers.php');
     exit();
 }
-if ($jobName === null) {
+if ($jobID === null) {
     header('location: list_customers.php');
     exit();
 }
@@ -47,14 +47,14 @@ require_once 'header.inc.php';
         FROM Job j
         JOIN JobItem ji ON j.jobID = ji.jobID
         JOIN Item i ON ji.itemID = i.itemID
-        WHERE j.jobName = ?";
+        WHERE j.jobID = ?";
 
     $stmt = $conn->prepare($sql);
     if (!$stmt) {
         echo "Failed to prepare";
     } else {
         // Bind Parameters from User Input
-        $stmt->bind_param('s', $jobName);
+        $stmt->bind_param('s', $jobID);
 
         // Execute the Statement
         $stmt->execute();
@@ -77,7 +77,7 @@ require_once 'header.inc.php';
         echo "</div>";
     ?>
         <div>
-            <a href="update_job.php?jobName=<?= htmlspecialchars($jobName) ?>">Update Job</a>
+            <a href="update_customer.php?jobID=<?= htmlspecialchars($jobID) ?>">Update Job</a>
         </div>
     <?php
     }
