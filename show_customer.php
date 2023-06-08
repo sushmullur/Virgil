@@ -73,6 +73,8 @@ require_once 'header.inc.php';
                 // Additional rows, if any, can be processed here
                 echo "Item Name: " . htmlspecialchars($itemName) . "<br>";
             }
+        } else {
+            echo "Deez Nutz didn't pass";
         }
         echo "</div>";
     ?>
